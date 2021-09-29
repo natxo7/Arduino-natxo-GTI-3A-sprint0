@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-
+//clase LED
 #ifndef LED_H_INCLUIDO
 #define LED_H_INCLUIDO
 
@@ -10,7 +10,11 @@
 
 // ----------------------------------------------------------
 // ----------------------------------------------------------
+//tiempo-->esperar()-->
 void esperar (long tiempo) {
+  //esta funcion metera un delay
+  //param:tiempo
+  //no devuelve nada
   delay (tiempo);
 }
 
@@ -34,13 +38,15 @@ public:
   // .........................................................
   // .........................................................
   void encender () {
-	digitalWrite(numeroLED, HIGH); 
+    //se utiliza para encender el led
+	digitalWrite(numeroLED, HIGH);
 	encendido = true;
   }
 
   // .........................................................
   // .........................................................
   void apagar () {
+    //se utiliza para apagar el LED
 	  digitalWrite(numeroLED, LOW);
 	  encendido = false;
   }
@@ -48,6 +54,7 @@ public:
   // .........................................................
   // .........................................................
   void alternar () {
+    //se utliza para ir variando entre encender y apagar
 	if (encendido) {
 	  apagar();
 	} else {
@@ -57,9 +64,11 @@ public:
 
   // .........................................................
   // .........................................................
+  //tiempo-->brillar()-->
   void brillar (long tiempo) {
+    //funcion brillar enciende el led durante un tiempo y luego lo apaga
 	encender ();
-	esperar(tiempo); 
+	esperar(tiempo);
 	apagar ();
   }
 }; // class

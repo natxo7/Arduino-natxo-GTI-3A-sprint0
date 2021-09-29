@@ -55,22 +55,22 @@ public:
   // .........................................................
   using CallbackCaracteristicaEscrita = void ( uint16_t conn_handle,
 											   BLECharacteristic * chr,
-											   uint8_t * data, uint16_t len); 
+											   uint8_t * data, uint16_t len);
   // .........................................................
   // .........................................................
   class Caracteristica {
   private:
 	uint8_t uuidCaracteristica[16] = { // el uuid se copia aquí (al revés) a partir de un string-c
 	  // least signficant byte, el primero
-	  '0', '1', '2', '3', 
-	  '4', '5', '6', '7', 
-	  '8', '9', 'A', 'B', 
+	  '0', '1', '2', '3',
+	  '4', '5', '6', '7',
+	  '8', '9', 'A', 'B',
 	  'C', 'D', 'E', 'F'
 	};
 
-	// 
-	// 
-	// 
+	//
+	//
+	//
 	BLECharacteristic laCaracteristica;
 
   public:
@@ -81,7 +81,7 @@ public:
 	  :
 	  laCaracteristica( stringAUint8AlReves( nombreCaracteristica_, &uuidCaracteristica[0], 16 ) )
 	{
-	  
+
 	} // ()
 
 	// .........................................................
@@ -89,8 +89,8 @@ public:
 	Caracteristica( const char * nombreCaracteristica_ ,
 					uint8_t props,
 					BleSecurityMode permisoRead,
-					BleSecurityMode permisoWrite, 
-					uint8_t tam ) 
+					BleSecurityMode permisoWrite,
+					uint8_t tam )
 	  :
 	  Caracteristica( nombreCaracteristica_ ) // llamada al otro constructor
 	{
@@ -99,7 +99,7 @@ public:
 
   private:
 	// .........................................................
-	// CHR_PROPS_WRITE , CHR_PROPS_READ ,  CHR_PROPS_NOTIFY 
+	// CHR_PROPS_WRITE , CHR_PROPS_READ ,  CHR_PROPS_NOTIFY
 	// .........................................................
 	void asignarPropiedades ( uint8_t props ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( " laCaracteristica.setProperties( props ); ");
@@ -128,16 +128,17 @@ public:
 	// .........................................................
 	void asignarPropiedadesPermisosYTamanyoDatos( uint8_t props,
 												 BleSecurityMode permisoRead,
-												 BleSecurityMode permisoWrite, 
+												 BleSecurityMode permisoWrite,
 												 uint8_t tam ) {
 	  asignarPropiedades( props );
 	  asignarPermisos( permisoRead, permisoWrite );
 	  asignarTamanyoDatos( tam );
 	} // ()
-												 
+
 
 	// .........................................................
 	// .........................................................
+  //str-->escribirDatos()-->uint16_t
 	uint16_t escribirDatos( const char * str ) {
 	  // Serial.print( " return (*this).laCaracteristica.write( str  = " );
 	  // Serial.println( str );
@@ -151,8 +152,9 @@ public:
 
 	// .........................................................
 	// .........................................................
+  //str-->notificarDatos()-->uint16_t
 	uint16_t notificarDatos( const char * str ) {
-	  
+
 	  uint16_t r = laCaracteristica.notify( &str[0] );
 
 	  return r;
@@ -160,6 +162,7 @@ public:
 
 	// .........................................................
 	// .........................................................
+  //cb-->instalarCallbackCaracteristicaEscrita()-->
 	void instalarCallbackCaracteristicaEscrita( CallbackCaracteristicaEscrita cb ) {
 	  (*this).laCaracteristica.setWriteCallback( cb );
 	} // ()
@@ -173,16 +176,16 @@ public:
 	} // ()
 
   }; // class Caracteristica
-  
+
   // --------------------------------------------------------
   // --------------------------------------------------------
 private:
-  
+
   uint8_t uuidServicio[16] = { // el uuid se copia aquí (al revés) a partir de un string-c
 	// least signficant byte, el primero
-	'0', '1', '2', '3', 
-	'4', '5', '6', '7', 
-	'8', '9', 'A', 'B', 
+	'0', '1', '2', '3',
+	'4', '5', '6', '7',
+	'8', '9', 'A', 'B',
 	'C', 'D', 'E', 'F'
   };
 
@@ -197,16 +200,16 @@ private:
   std::vector< Caracteristica * > lasCaracteristicas;
 
 public:
-  
+
   // .........................................................
   // .........................................................
   ServicioEnEmisora( const char * nombreServicio_ )
 	:
 	elServicio( stringAUint8AlReves( nombreServicio_, &uuidServicio[0], 16 ) )
   {
-	
+
   } // ()
-  
+
   // .........................................................
   // .........................................................
   void escribeUUID() {
@@ -245,7 +248,7 @@ public:
 	// "conversión de tipo": si pongo esta clase en un sitio donde necesitan un BLEService
 	return elServicio;
   } // ()
-	
+
 }; // class
 
 #endif
@@ -254,4 +257,3 @@ public:
 // ----------------------------------------------------------
 // ----------------------------------------------------------
 // ----------------------------------------------------------
-

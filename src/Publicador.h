@@ -15,8 +15,8 @@ class Publicador {
   // ............................................................
 private:
 
-  uint8_t beaconUUID[16] = { 
-	'E', 'P', 'S', 'G', '-', 'G', 'T', 'I', 
+  uint8_t beaconUUID[16] = {
+	'E', 'P', 'S', 'G', '-', 'G', 'T', 'I',
 	'-', 'P', 'R', 'O', 'Y', '-', '3', 'A'
 	};
 
@@ -28,7 +28,7 @@ public:
 	  0x004c, // fabricanteID (Apple)
 	  4 // txPower
 	  };
-  
+
   const int RSSI = -53; // por poner algo, de momento no lo uso
 
   // ............................................................
@@ -58,6 +58,8 @@ public:
 
   // ............................................................
   // ............................................................
+  //valorCO2, contador,tiempoEspera-->publicarCO2()-->
+  //publica CO2
   void publicarCO2( int16_t valorCO2, uint8_t contador,
 					long tiempoEspera ) {
 
@@ -65,10 +67,10 @@ public:
 	// 1. empezamos anuncio
 	//
 	uint16_t major = (MedicionesID::CO2 << 8) + contador;
-	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID,
 											major,
 											valorCO2, // minor
-											(*this).RSSI // rssi
+											(*this).RSSI //  rssi es un valor constante
 									);
 
 	/*
@@ -94,20 +96,22 @@ public:
 
   // ............................................................
   // ............................................................
+  //valorTemperatura,contador,tiempoEspera-->publicarTemperatura()-->
+  //ùblica temperatura
   void publicarTemperatura( int16_t valorTemperatura,
 							uint8_t contador, long tiempoEspera ) {
 
 	uint16_t major = (MedicionesID::TEMPERATURA << 8) + contador;
-	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID,
 											major,
 											valorTemperatura, // minor
-											(*this).RSSI // rssi
+											(*this).RSSI // rssi es un valor constante
 									);
 	esperar( tiempoEspera );
 
 	(*this).laEmisora.detenerAnuncio();
   } // ()
-	
+
 }; // class
 
 // --------------------------------------------------------------

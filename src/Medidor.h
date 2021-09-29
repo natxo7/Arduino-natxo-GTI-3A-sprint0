@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-
+//Clase medidor
 #ifndef MEDIDOR_H_INCLUIDO
 #define MEDIDOR_H_INCLUIDO
 
@@ -10,7 +10,7 @@ class Medidor {
   // .....................................................
   // .....................................................
 private:
-
+// no tiene  atributos privados
 public:
 
   // .....................................................
@@ -27,16 +27,20 @@ public:
 
   // .....................................................
   // .....................................................
+  //-->medirCO2()-->int
   int medirCO2() {
+    //de momento la funcion mide siempre el valor 235
 	return 235;
   } // ()
 
   // .....................................................
   // .....................................................
+  //->medirTemperatura()-->int
   int medirTemperatura() {
+        //de momento la funcion mide siempre el valor -12
 	return -12; // qué frío !
   } // ()
-	
+
 }; // class
 
 // ------------------------------------------------------

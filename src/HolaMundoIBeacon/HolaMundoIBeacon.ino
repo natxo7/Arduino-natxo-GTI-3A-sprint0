@@ -54,7 +54,10 @@ namespace Globales {
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 void inicializarPlaquita () {
-
+/* De momento esta funcion se encuentra vacia
+ *  args: no recibe parametros
+ *  
+*/
   // de momento nada
 
 } // ()
@@ -67,16 +70,11 @@ void setup() {
   Globales::elPuerto.esperarDisponible();
 
   // 
-  // 
-  // 
   inicializarPlaquita();
 
   // Suspend Loop() to save power
   // suspendLoop();
 
-  // 
-  // 
-  // 
   Globales::elPublicador.encenderEmisora();
 
   // Globales::elPublicador.laEmisora.pruebaEmision();

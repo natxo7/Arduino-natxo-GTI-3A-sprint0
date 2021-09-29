@@ -24,7 +24,7 @@
 // ----------------------------------------------------------
 class EmisoraBLE {
 private:
-
+//declaracion de variable privadas
   const char * nombreEmisora;
   const uint16_t fabricanteID;
   const int8_t txPower;
@@ -34,12 +34,19 @@ public:
   // .........................................................
   // .........................................................
   using CallbackConexionEstablecida = void ( uint16_t connHandle );
+  /* esta funcion establecera conexion
+  args:connHandle
+  no devulve nada
+  */
   using CallbackConexionTerminada = void ( uint16_t connHandle, uint8_t reason);
-
+  /* esta funcion terminara conexion
+  args:connHandle
+  no devulve nada
+  */
   // .........................................................
   // .........................................................
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
-			  const int8_t txPower_ ) 
+			  const int8_t txPower_ )
 	:
 	nombreEmisora( nombreEmisora_ ) ,
 	fabricanteID( fabricanteID_ ) ,
@@ -56,12 +63,12 @@ public:
   // .........................................................
   /* creo que no me sirve esta versión porque parece
 	 que no se instalen los callbacks si la emisora no está encendida,
-	 pero no la puedo encender en el constructor 
+	 pero no la puedo encender en el constructor
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
 			  const int8_t txPower_,
 			  CallbackConexionEstablecida cbce,
 			  CallbackConexionTerminada cbct
-			  ) 
+			  )
 	:
 	EmisoraBLE ( nombreEmisora_, fabricanteID_, txPower_ )
   {
@@ -69,12 +76,17 @@ public:
 	instalarCallbackConexionTerminada( cbct );
   } // ()
   */
-	
+
   // .........................................................
   // .........................................................
   void encenderEmisora() {
+
+    /*esta funcion enciende una EmisoraBLE
+    args: no recibe ningun parametro
+    devuelta: no devuelve nada
+    */
 	// Serial.println ( "Bluefruit.begin() " );
-	 Bluefruit.begin(); 
+	 Bluefruit.begin();
 
 	 // por si acaso:
 	 (*this).detenerAnuncio();
@@ -84,7 +96,9 @@ public:
   // .........................................................
   void encenderEmisora( CallbackConexionEstablecida cbce,
 						CallbackConexionTerminada cbct ) {
-
+/*esta funcion enciende la emisora
+ lo qual le pasas dos cb vacios por lo tanto tampoco puede devolver nada
+*/
 	encenderEmisora();
 
 	instalarCallbackConexionEstablecida( cbce );
@@ -94,15 +108,17 @@ public:
 
   // .........................................................
   // .........................................................
+  //-->detenerAnuncio()-->
+  //
   void detenerAnuncio() {
-
+//esta funcion no recibe paramantros lo unico que hace es detenerAnuncio
 	if ( (*this).estaAnunciando() ) {
 	  // Serial.println ( "Bluefruit.Advertising.stop() " );
-	  Bluefruit.Advertising.stop(); 
+	  Bluefruit.Advertising.stop();
 	}
 
   }  // ()
-  
+
   // .........................................................
   // estaAnunciando() -> Boleano
   // .........................................................
@@ -112,15 +128,16 @@ public:
 
   // .........................................................
   // .........................................................
+  //--> beaconUUID,major,minor,rssi-->emitirAnuncioIBeacon()-->
   void emitirAnuncioIBeacon( uint8_t * beaconUUID, int16_t major, int16_t minor, uint8_t rssi ) {
-
+//en esta funcion emite y crea un iBeacon
 	//
 	//
 	//
 	(*this).detenerAnuncio();
-	
+
 	//
-	// creo el beacon 
+	// creo el beacon
 	//
 	BLEBeacon elBeacon( beaconUUID, major, minor, rssi );
 	elBeacon.setManufacturer( (*this).fabricanteID );
@@ -147,8 +164,8 @@ public:
 	//
 	// empieza el anuncio, 0 = tiempo indefinido (ya lo pararán)
 	//
-	Bluefruit.Advertising.start( 0 ); 
-	
+	Bluefruit.Advertising.start( 0 );
+
   } // ()
 
   // .........................................................
@@ -178,16 +195,16 @@ public:
   //       0x4c, 0x00,             // companyID 2bytes
   //       0x02,                   // ibeacon type 1 byte
   //       0x15,                   // ibeacon length 1 byte (dec=21 lo que va a continuación: desde  la 'f' hasta 0x01)
-  // 
+  //
   // 2. uuid: 16bytes
   // 'f', 'i', 's', 't', 'r', 'o', 'f', 'i', 's', 't', 'r', 'o', 0xa7, 0x10, 0x96, 0xe0
-  // 
+  //
   // 2 major: 2bytes
   // 0x04, 0xd2,
-  // 
+  //
   // minor: 2bytes
   // 0x10, 0xe1,
-  // 
+  //
   // 0xca, // tx power : 1bytes
   //
   // 0x01, // este es el byte 31 = BLE_GAP_ADV_SET_DATA_SIZE_MAX, parece que sobra
@@ -202,7 +219,7 @@ public:
   */
   void emitirAnuncioIBeaconLibre( const char * carga, const uint8_t tamanyoCarga ) {
 
-	(*this).detenerAnuncio(); 
+	(*this).detenerAnuncio();
 
 	Bluefruit.Advertising.clearData();
 	Bluefruit.ScanResponse.clearData(); // hace falta?
@@ -224,11 +241,11 @@ public:
 	  0x4c, 0x00, // companyID 2
 	  0x02, // ibeacon type 1byte
 	  21, // ibeacon length 1byte (dec=21)  longitud del resto // 0x15 // ibeacon length 1byte (dec=21)  longitud del resto
-	  '-', '-', '-', '-', 
-	  '-', '-', '-', '-', 
-	  '-', '-', '-', '-', 
-	  '-', '-', '-', '-', 
-	  '-', '-', '-', '-', 
+	  '-', '-', '-', '-',
+	  '-', '-', '-', '-',
+	  '-', '-', '-', '-',
+	  '-', '-', '-', '-',
+	  '-', '-', '-', '-',
 	  '-'
 	};
 
@@ -236,7 +253,7 @@ public:
 	// addData() hay que usarlo sólo una vez. Por eso copio la carga
 	// en el anterior array, donde he dejado 21 sitios libres
 	//
-	memcpy( &restoPrefijoYCarga[4], &carga[0], ( tamanyoCarga > 21 ? 21 : tamanyoCarga ) ); 
+	memcpy( &restoPrefijoYCarga[4], &carga[0], ( tamanyoCarga > 21 ? 21 : tamanyoCarga ) );
 
 	//
 	// copio la carga para emitir
@@ -255,13 +272,14 @@ public:
 	//
 	// empieza el anuncio, 0 = tiempo indefinido (ya lo pararán)
 	//
-	Bluefruit.Advertising.start( 0 ); 
+	Bluefruit.Advertising.start( 0 );
 
 	Globales::elPuerto.escribir( "emitiriBeacon libre  Bluefruit.Advertising.start( 0 );  \n");
   } // ()
 
   // .........................................................
   // .........................................................
+  //servicio-->anyadirServicio()-->v/F
   bool anyadirServicio( ServicioEnEmisora & servicio ) {
 
 	Globales::elPuerto.escribir( " Bluefruit.Advertising.addService( servicio ); \n");
@@ -271,22 +289,22 @@ public:
 	if ( ! r ) {
 	  Serial.println( " SERVICION NO AÑADIDO \n");
 	}
-	
+
 
 	return r;
 	 // nota: uso conversión de tipo de servicio (ServicioEnEmisora) a BLEService
 	 // para addService()
   } // ()
 
-  
-  // .........................................................
-  // .........................................................
-  bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio ) { 
-	return (*this).anyadirServicio( servicio );
-  } // 
 
   // .........................................................
-  template <typename ... T>
+  // .........................................................
+  bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio ) {
+	return (*this).anyadirServicio( servicio );
+  } //
+
+  // .........................................................
+  template <typename ... T>//este es un tipo de array al cual se le pueden ir añadiendo valores del mismo tipo
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio,
 											 ServicioEnEmisora::Caracteristica & caracteristica,
 											 T& ... restoCaracteristicas) {
@@ -294,11 +312,11 @@ public:
 	servicio.anyadirCaracteristica( caracteristica );
 
 	return anyadirServicioConSusCaracteristicas( servicio, restoCaracteristicas... );
-	
+
   } // ()
 
   // .........................................................
-  template <typename ... T>
+  template <typename ... T>//este es un tipo de array al cual se le pueden ir añadiendo valores del mismo tipo
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
 													 // ServicioEnEmisora::Caracteristica & caracteristica,
 													 T& ... restoCaracteristicas) {
@@ -308,17 +326,19 @@ public:
 	servicio.activarServicio();
 
 	return r;
-	
+
   } // ()
 
   // .........................................................
   // .........................................................
+  //cb-->instalarCallbackConexionEstablecida()-->
   void instalarCallbackConexionEstablecida( CallbackConexionEstablecida cb ) {
 	Bluefruit.Periph.setConnectCallback( cb );
   } // ()
 
   // .........................................................
   // .........................................................
+  //cb-->instalarCallbackConexionTerminada()-->
   void instalarCallbackConexionTerminada( CallbackConexionTerminada cb ) {
 	Bluefruit.Periph.setDisconnectCallback( cb );
   } // ()
@@ -337,4 +357,3 @@ public:
 // ----------------------------------------------------------
 // ----------------------------------------------------------
 // ----------------------------------------------------------
-
